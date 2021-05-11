@@ -17,14 +17,17 @@ def audio_crawl(url, audio_out_dir):
         'noplaylist': True,
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
+            'preferredcodec': 'wav',
             'preferredquality': '192'
         }],
+        'postprocessor_args': [
+            '-ar', '22050'
+        ],
         'outtmpl': audio_out_dir
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.extract_info(url, download = True)
-    
+        
 def _multi_crawl(url, audio_path):
     if "list" in url:
         pass
