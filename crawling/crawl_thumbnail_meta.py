@@ -5,8 +5,8 @@ import wget
 import argparse
 
 parser = argparse.ArgumentParser(description='thumbnail/meta crawling')
-parser.add_argument('-t_dir', type=str, default='./dataset/thumbnail')
-parser.add_argument('-m_dir', type=str, default='./dataset/meta')
+parser.add_argument('-t_dir', type=str, default='../dataset/thumbnail')
+parser.add_argument('-m_dir', type=str, default='../dataset/meta')
 
 def crawl(url, audio_out_dir):
     ydl_opts = {
@@ -53,7 +53,7 @@ def _title_filter(title):
 
 def main():
     args = parser.parse_args()
-    urls_dir = "./dataset/query"
+    urls_dir = "../dataset/query"
     lang = ['en.json', 'ko.json', 'fr.json']
     errros = []
     for (root, dirs, files) in os.walk(urls_dir):
