@@ -16,14 +16,23 @@ chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 
+def _title_filter(title):
+    binary = 1
+    nlp_filter = ['vlog', 'official','episode']
+    delete_keys = []
+    for token in nlp_filter:
+        if token in title.lower():
+            binary = 0
+    return binary
+    
 def _get_urls(keyword, code, results, TIME_SLEEP):
     if code == "en":
-        filters = ["&sp=CAASAhAB", "&sp=CAESAhAB"]
+        keyword = keyword + " music"
     elif code == "ko":
-        filters = ["&sp=CAA%253D", "&sp=CAE%253D"]
+        keyword = keyword + " 음악"
     elif code == "fr":
-        filters = ["&sp=CAA%253D", "&sp=CAE%253D"]
-    search_keyword_encode = keyword + ' "playlist" ' + random.choice(filters)
+        keyword = keyword + " musique"
+    search_keyword_encode = keyword + ' "playlist"'
     url = "https://www.youtube.com/results?search_query=" + search_keyword_encode
     driver = wd.Chrome(executable_path="./chromedriver", options=chrome_options)
     driver.get(url)
@@ -47,7 +56,6 @@ def _get_urls(keyword, code, results, TIME_SLEEP):
     driver.quit()
     return results
 
-
 def main(keyword, code):
     results = {}
     MAX_LENGTH = 300
@@ -57,9 +65,9 @@ def main(keyword, code):
     while len(results) < MAX_LENGTH:
         print("iter: ", count, "Time Sleep: ", TIME_SLEEP, "length: ", len(results))
         results = _get_urls(keyword, code, results, TIME_SLEEP)
-        TIME_SLEEP = TIME_SLEEP + 10.0
+        TIME_SLEEP = TIME_SLEEP + 5.0
         count = count + 1
-        if count > 5:
+        if count > 3:
             break
     
     return results

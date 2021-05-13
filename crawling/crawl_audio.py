@@ -27,7 +27,7 @@ def audio_crawl(url, audio_out_dir):
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         ydl.extract_info(url, download = True)
-        
+
 def _multi_crawl(url, audio_path):
     if "list" in url:
         pass
@@ -56,7 +56,7 @@ def main():
                 urls_dict = json.load(open(os.path.join(root, dir_name, la), 'r', encoding='utf-8')).keys()
                 for url in urls_dict:
                     youtube_id = url.split("https://www.youtube.com/watch?v=")[-1]
-                    audio_path = os.path.join(args.a_dir, dir_name, la.split(".json")[0], youtube_id + ".mp3")
+                    audio_path = os.path.join(args.a_dir, dir_name, la.split(".json")[0], youtube_id)
                     if not os.path.exists(os.path.dirname(audio_path)):
                         os.makedirs(os.path.dirname(audio_path))
                     save_path.append(audio_path)

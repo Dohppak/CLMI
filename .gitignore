@@ -1,3 +1,5 @@
+crawling/chromedriver
+
 # Distribution / packaging
 .Python
 notebook/

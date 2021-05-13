@@ -44,7 +44,7 @@ def _duration_filter(duration):
     
 def _title_filter(title):
     binary = 1
-    nlp_filter = ['vlog', 'official','episode']
+    nlp_filter = ['vlog',"movie",'official','episode','브이로그','video',"album", "english", "feat","lyrics", "version", "season", "kid"]
     delete_keys = []
     for token in nlp_filter:
         if token in title.lower():
