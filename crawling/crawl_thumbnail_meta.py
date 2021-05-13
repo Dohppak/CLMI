@@ -38,7 +38,7 @@ def _get_meta_dict(meta, url):
 
 def _duration_filter(duration):
     binary = 1
-    if duration < 10:
+    if duration < 20:
         binary = 0
     return binary
     
