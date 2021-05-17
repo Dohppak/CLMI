@@ -17,11 +17,11 @@ def audio_crawl(url, audio_out_dir):
         'noplaylist': True,
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'wav',
+            'preferredcodec': 'mp3',
             'preferredquality': '192'
         }],
         'postprocessor_args': [
-            '-ar', '22050'
+            '-ar', '16000'
         ],
         'outtmpl': audio_out_dir
     }
@@ -33,7 +33,7 @@ def _multi_crawl(url, audio_path):
         pass
     else:
         try:
-            audio_crawl(url, audio_path)
+            audio_crawl(url, audio_path + ".")
         except:
             pass
 
@@ -45,24 +45,39 @@ def poolcontext(*args, **kwargs):
 
 def main():
     args = parser.parse_args()
-    urls_dir = "../dataset/query"
-    lang = ['en.json', 'ko.json', 'fr.json']
+    urls_dir = "../dataset/meta"
+    lang = ['en', 'ko', 'fr']
+    keyword = ['spring'
+                ,'lounge'
+                ,'winter'
+                ,'workout'
+                ,'meditation'
+                ,'gym'
+                ,'autumn'
+                ,'cafe'
+                ,'afternoon'
+                ,'office'
+                ,'nature'
+                ,'summer'
+                ,'road_trip'
+                ,'club'
+                ,'party'
+                ,'late_night'
+                ,'morning']
     save_path = []
     url_list = []
-    for (root, dirs, files) in os.walk(urls_dir):
-        for dir_name in dirs:
-            print("start: ",dir_name)
-            for la in lang:
-                urls_dict = json.load(open(os.path.join(root, dir_name, la), 'r', encoding='utf-8')).keys()
-                for url in urls_dict:
-                    youtube_id = url.split("https://www.youtube.com/watch?v=")[-1]
-                    audio_path = os.path.join(args.a_dir, dir_name, la.split(".json")[0], youtube_id)
-                    if not os.path.exists(os.path.dirname(audio_path)):
-                        os.makedirs(os.path.dirname(audio_path))
-                    save_path.append(audio_path)
-                    url_list.append(url)
-    print(len(save_path), len(url_list))
-    
+    for tag in keyword:
+        for la in lang:
+            json_list = os.listdir(os.path.join(urls_dir, tag, la))
+            for jfile in json_list:
+                f_url = json.load(open(os.path.join(urls_dir, tag, la, jfile), 'r', encoding='utf-8'))['url']
+                youtube_id = f_url.split("https://www.youtube.com/watch?v=")[-1]
+                audio_path = os.path.join(args.a_dir, tag, la, youtube_id)
+                if not os.path.exists(os.path.dirname(audio_path)):
+                    os.makedirs(os.path.dirname(audio_path))
+                save_path.append(audio_path)
+                url_list.append(f_url)
+
     with poolcontext(processes = multiprocessing.cpu_count()-2) as pool:
         pool.starmap(_multi_crawl, zip(url_list, save_path))
     
