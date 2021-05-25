@@ -1,6 +1,9 @@
 # CLMI
 
 ```
+apt-get install portaudio19-dev python-pyaudio.
+apt install libmp3lame-dev
+
 pip install -r requirements.txt
 ```
 

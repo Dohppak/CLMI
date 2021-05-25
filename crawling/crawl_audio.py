@@ -6,6 +6,7 @@ import argparse
 import multiprocessing
 from functools import partial
 from contextlib import contextmanager
+import torch
 
 parser = argparse.ArgumentParser(description='thumbnail/meta crawling')
 parser.add_argument('-a_dir', type=str, default='../dataset/audio')
@@ -47,23 +48,23 @@ def main():
     args = parser.parse_args()
     urls_dir = "../dataset/meta"
     lang = ['en', 'ko', 'fr']
-    keyword = ['spring'
-                ,'lounge'
-                ,'winter'
-                ,'workout'
-                ,'meditation'
-                ,'gym'
-                ,'autumn'
-                ,'cafe'
-                ,'afternoon'
-                ,'office'
-                ,'nature'
-                ,'summer'
-                ,'road_trip'
-                ,'club'
-                ,'party'
-                ,'late_night'
-                ,'morning']
+    keyword = ['spring',
+                'lounge',
+                'winter',
+                'workout',
+                'meditation',
+                'gym',
+                'autumn',
+                'cafe',
+                'afternoon',
+                'office',
+                'nature',
+                'summer',
+                'road_trip',
+                'club',
+                'party',
+                'late_night',
+                'morning']
     save_path = []
     url_list = []
     for tag in keyword:
@@ -77,9 +78,9 @@ def main():
                     os.makedirs(os.path.dirname(audio_path))
                 save_path.append(audio_path)
                 url_list.append(f_url)
-
+                
     with poolcontext(processes = multiprocessing.cpu_count()-2) as pool:
-        pool.starmap(_multi_crawl, zip(url_list, save_path))
+        pool.starmap(_multi_crawl, zip(url_list[:50], save_path[:50]))
     
 if __name__ == '__main__':
     main()

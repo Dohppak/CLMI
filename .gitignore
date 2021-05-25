@@ -2,6 +2,7 @@ crawling/chromedriver
 
 # Distribution / packaging
 .Python
+exp/
 notebook/
 dataset/
 build/
